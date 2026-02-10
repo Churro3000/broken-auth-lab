@@ -8,36 +8,56 @@ body {
     margin: 0;
 }
 
-#login-container, #dashboard {
+#login-container, #reset-container, #dashboard {
     background: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 300px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    width: 340px;
     text-align: center;
 }
 
 input {
     display: block;
     width: 100%;
-    margin: 10px 0;
-    padding: 8px;
+    margin: 12px 0;
+    padding: 10px;
     box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 button {
     background: #007bff;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 12px;
     width: 100%;
     cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    margin: 10px 0;
 }
 
 button:hover {
     background: #0056b3;
 }
 
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#error-message, #reset-result {
+    min-height: 20px;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
 #error-message {
-    color: red;
+    color: #d32f2f;
 }
