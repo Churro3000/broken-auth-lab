@@ -6,7 +6,7 @@ const users = [
 ];
 
 // ────────────────────────────────────────────────
-// Login logic (existing)
+// Login logic
 // ────────────────────────────────────────────────
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -14,6 +14,12 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const errorMessage = document.getElementById('error-message');
+
+    // NEW: Prevent empty submission and show custom message
+    if (!username.trim() || !password.trim()) {
+        errorMessage.textContent = 'Please enter both username and password.';
+        return;
+    }
 
     // Insecure: plaintext comparison, no hashing
     const user = users.find(u => u.username === username && u.password === password);
