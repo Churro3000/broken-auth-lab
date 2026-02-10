@@ -5,7 +5,9 @@ const users = [
     { username: 'viewy', password: 'letmein' }
 ];
 
-// Handle form submission
+// ────────────────────────────────────────────────
+// Login logic (existing)
+// ────────────────────────────────────────────────
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -21,6 +23,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         localStorage.setItem('loggedIn', 'true');
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('error-message').textContent = '';
     } else {
         // Username enumeration vulnerability
         const existingUser = users.some(u => u.username === username);
@@ -45,3 +48,53 @@ if (localStorage.getItem('loggedIn') === 'true') {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
 }
+
+// ────────────────────────────────────────────────
+// Password Reset logic (NEW - intentionally broken)
+// ────────────────────────────────────────────────
+function showReset() {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('reset-container').style.display = 'block';
+    document.getElementById('reset-result').textContent = '';
+}
+
+function showLogin() {
+    document.getElementById('reset-container').style.display = 'none';
+    document.getElementById('login-container').style.display = 'block';
+}
+
+document.getElementById('reset-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById('reset-username').value.trim();
+    const result = document.getElementById('reset-result');
+
+    if (!username) {
+        result.textContent = 'Please enter a username.';
+        result.style.color = 'red';
+        return;
+    }
+
+    // Check if user exists (still leaks valid usernames)
+    const userExists = users.some(u => u.username === username);
+
+    if (!userExists) {
+        result.textContent = 'No account found with that username.';
+        result.style.color = 'red';
+        return;
+    }
+
+    // Very broken: predictable token (base64 of username + static string)
+    const fakeToken = btoa(username + '-reset-2025');
+
+    // Simulate "email sent" with dangerous link
+    result.innerHTML = `
+        A password reset link has been sent to your email.<br><br>
+        <strong>Reset link (for demo purposes):</strong><br>
+        https://example.com/reset?user=${encodeURIComponent(username)}&token=${fakeToken}<br><br>
+        <span style="color: #d32f2f; font-weight: bold;">
+            WARNING: This token is predictable and contains the username!
+        </span>
+    `;
+    result.style.color = '#333';
+});
